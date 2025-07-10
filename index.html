@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-dark">
+    <div class="container">
+        <header>
+            <div class="logo floating">Fitness Tracker</div>
+            <div>
+                <button class="theme-toggle" id="themeToggle">Сменить тему</button>
+                <button class="view-toggle" id="viewToggle">Мобильный вид</button>
+            </div>
+        </header>
+
+        <div class="nav-buttons">
+            <button class="nav-button active" data-section="training">Тренировка</button>
+            <button class="nav-button" data-section="progress">Прогресс</button>
+            <button class="nav-button" data-section="calculator">Калькулятор жима</button>
+            <button class="nav-button" data-section="nutrition">Питание</button>
+            <button class="nav-button" data-section="records">Рекорды</button>
+        </div>
+
+        <!-- Секция тренировки -->
+        <section id="training" class="section active">
+            <h2>Запись тренировки</h2>
+            <form class="exercise-form" id="exerciseForm">
+                <div class="input-group">
+                    <label for="exerciseName">Упражнение</label>
+                    <input type="text" id="exerciseName" placeholder="Название упражнения" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div class="input-group">
+                        <label for="sets">Подходы</label>
+                        <input type="number" id="sets" placeholder="3" min="1" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="reps">Повторения</label>
+                        <input type="number" id="reps" placeholder="10" min="1" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="weight">Вес (кг)</label>
+                        <input type="number" id="weight" placeholder="20" min="0" step="0.5" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="restTime">Время отдыха (мин)</label>
+                    <input type="number" id="restTime" placeholder="2" min="0" step="0.5">
+                </div>
+                <button type="submit">Добавить упражнение</button>
+            </form>
+
+            <h2>История тренировок</h2>
+            <div class="exercise-list" id="exerciseList"></div>
+        </section>
+
+        <!-- Секция прогресса -->
+        <section id="progress" class="section">
+            <h2>Ваш прогресс</h2>
+            <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+            </div>
+            <div class="progress-info">
+                <p id="progressText">Загружаем данные о вашем прогрессе...</p>
+            </div>
+        </section>
+
+        <!-- Секция калькулятора жима -->
+        <section id="calculator" class="section">
+            <h2>Калькулятор жима</h2>
+            <form class="calculator-form" id="calculatorForm">
+                <div class="input-group">
+                    <label for="maxWeight">Максимальный вес (кг)</label>
+                    <input type="number" id="maxWeight" placeholder="100" min="1" step="0.5" required>
+                </div>
+                <div class="input-group">
+                    <label for="desiredReps">Желаемое количество повторений</label>
+                    <input type="number" id="desiredReps" placeholder="5" min="1" required>
+                </div>
+                <div class="input-group">
+                    <label for="currentReps">Текущее количество повторений (с макс. весом)</label>
+                    <input type="number" id="currentReps" placeholder="1" min="1">
+                </div>
+                <div class="input-group">
+                    <label for="trainingExperience">Опыт тренировок (лет)</label>
+                    <input type="number" id="trainingExperience" placeholder="1" min="0" step="0.5">
+                </div>
+                <button type="submit">Рассчитать</button>
+            </form>
+            <div class="calculator-result" id="calculatorResult" style="display: none;">
+                <h3>Рекомендуемый вес</h3>
+                <p id="calculatedWeight">0 кг</p>
+                <p id="calculationDetails"></p>
+            </div>
+        </section>
+
+        <!-- Секция питания -->
+        <section id="nutrition" class="section">
+            <h2>Учет питания</h2>
+            
+            <div class="nutrition-summary">
+                <div class="nutrition-card pulse">
+                    <h3>Калории</h3>
+                    <p id="totalCalories">0</p>
+                    <p>ккал</p>
+                </div>
+                <div class="nutrition-card">
+                    <h3>Белки</h3>
+                    <p id="totalProtein">0</p>
+                    <p>грамм</p>
+                </div>
+                <div class="nutrition-card">
+                    <h3>Жиры</h3>
+                    <p id="totalFat">0</p>
+                    <p>грамм</p>
+                </div>
+                <div class="nutrition-card">
+                    <h3>Углеводы</h3>
+                    <p id="totalCarbs">0</p>
+                    <p>грамм</p>
+                </div>
+            </div>
+
+            <form class="nutrition-form" id="nutritionForm">
+                <div class="input-group">
+                    <label for="foodItem">Продукт</label>
+                    <select id="foodItem" required>
+                        <option value="">Выберите продукт</option>
+                        <option value="chicken_breast">Куриная грудка (100г)</option>
+                        <option value="eggs">Яйца (1 шт)</option>
+                        <option value="oatmeal">Овсянка (100г сухая)</option>
+                        <option value="rice">Рис вареный (100г)</option>
+                        <option value="buckwheat">Гречка вареная (100г)</option>
+                        <option value="potato">Картофель вареный (100г)</option>
+                        <option value="banana">Банан (1 шт)</option>
+                        <option value="apple">Яблоко (1 шт)</option>
+                        <option value="orange">Апельсин (1 шт)</option>
+                        <option value="milk">Молоко 2.5% (100мл)</option>
+                        <option value="cottage_cheese">Творог 5% (100г)</option>
+                        <option value="yogurt">Йогурт натуральный (100г)</option>
+                        <option value="beef">Говядина (100г)</option>
+                        <option value="salmon">Лосось (100г)</option>
+                        <option value="tuna">Тунец консервированный (100г)</option>
+                        <option value="bread">Хлеб цельнозерновой (1 ломтик)</option>
+                        <option value="pasta">Макароны вареные (100г)</option>
+                        <option value="nuts">Орехи смешанные (30г)</option>
+                        <option value="avocado">Авокадо (1/2 шт)</option>
+                        <option value="olive_oil">Оливковое масло (1 ст.л.)</option>
+                        <option value="cheese">Сыр (30г)</option>
+                        <option value="protein_shake">Протеиновый коктейль (1 порция)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="foodQuantity">Количество</label>
+                    <input type="number" id="foodQuantity" placeholder="1" min="0.1" step="0.1" required>
+                </div>
+                <button type="submit">Добавить</button>
+            </form>
+
+            <div class="input-group" style="margin: 20px 0;">
+                <label for="userWeight">Ваш вес (кг) для расчета нормы БЖУ</label>
+                <input type="number" id="userWeight" placeholder="70" min="30" max="200" step="0.1">
+                <button id="calculateNutritionBtn" style="margin-top: 10px;">Рассчитать норму</button>
+            </div>
+
+            <div id="nutritionNeeds" style="display: none; background: rgba(255,0,128,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h3>Ваша суточная норма</h3>
+                <p>Белки: <span id="proteinNeed">0</span> г</p>
+                <p>Жиры: <span id="fatNeed">0</span> г</p>
+                <p>Углеводы: <span id="carbsNeed">0</span> г</p>
+            </div>
+
+            <h2>Съедено сегодня</h2>
+            <div class="food-list" id="foodList"></div>
+        </section>
+
+        <!-- Секция рекордов -->
+        <section id="records" class="section">
+            <h2>Ваши рекорды</h2>
+            <form id="recordForm" style="margin-bottom: 30px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="input-group">
+                        <label for="recordExercise">Упражнение</label>
+                        <input type="text" id="recordExercise" placeholder="Жим лежа" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="recordValue">Рекорд (кг)</label>
+                        <input type="number" id="recordValue" placeholder="100" min="1" step="0.5" required>
+                    </div>
+                </div>
+                <button type="submit">Добавить рекорд</button>
+            </form>
+
+            <div class="records-list" id="recordsList"></div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
